@@ -1,0 +1,40 @@
+# ============================================================
+# Clean URLs — hide the .php extension on the public site pages
+# (index, reviews, review, compare, coupons, blog, post,
+# proxy-purchase, contact). admin/* and go.php are left exactly
+# as they are — go.php is a tracking/redirect endpoint, not a
+# page, and the admin panel keeps its own explicit .php links.
+#
+# Works on Apache / cPanel (mod_rewrite is enabled by default on
+# virtually every shared host). Has no effect under PHP's built-in
+# dev server (`php -S`), which doesn't read .htaccess at all.
+# ============================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Avoid Apache's content-negotiation (MultiViews) guessing a .php
+  # file for an extension-less request before our rules run.
+  <IfModule mod_negotiation.c>
+    Options -MultiViews
+  </IfModule>
+
+  # 1) Normalize the homepage: /index.php -> /
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\s/+index\.php[\s?]
+  RewriteRule ^ /? [R=301,L]
+
+  # 2) Redirect any other *.php request to its clean equivalent,
+  #    e.g. /reviews.php -> /reviews, /review.php?slug=x -> /review?slug=x.
+  #    admin/* and go.php are excluded so they keep working exactly
+  #    as before, with no redirect at all.
+  RewriteCond %{REQUEST_URI} !/admin/
+  RewriteCond %{REQUEST_URI} !/go\.php
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\s/+(.+)\.php[\s?]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # 3) Internally serve the matching .php file when a clean URL is
+  #    requested, e.g. /reviews -> reviews.php (URL bar stays clean).
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.php -f
+  RewriteRule ^(.+?)/?$ $1.php [L,QSA]
+</IfModule>
