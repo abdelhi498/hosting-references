@@ -129,4 +129,13 @@ return [
     'admin.confirm_delete' => 'Are you sure you want to delete this?',
     'admin.saved' => 'Saved successfully',
     'admin.deleted' => 'Deleted successfully',
+
+    'admin.change_password' => 'Change password',
+    'admin.current_password' => 'Current password',
+    'admin.new_password' => 'New password',
+    'admin.confirm_password' => 'Confirm new password',
+    'admin.password_changed' => 'Password changed successfully',
+    'admin.current_password_wrong' => 'The current password is incorrect',
+    'admin.password_too_short' => 'Password must be at least 8 characters',
+    'admin.password_mismatch' => 'The two passwords do not match',
 ];

@@ -40,6 +40,7 @@ $nav_items = [
     </nav>
     <div class="admin-user">
       <div><?= e($_SESSION['admin_name'] ?? '') ?></div>
+      <a href="profile.php" class="btn btn-ghost btn-sm" style="margin-top:8px"><?= t('admin.change_password') ?></a>
       <a href="logout.php" class="btn btn-outline btn-sm" style="margin-top:8px"><?= t('admin.logout') ?></a>
     </div>
   </aside>

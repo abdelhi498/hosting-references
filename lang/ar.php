@@ -129,4 +129,13 @@ return [
     'admin.confirm_delete' => 'هل أنت متأكد من الحذف؟',
     'admin.saved' => 'تم الحفظ بنجاح',
     'admin.deleted' => 'تم الحذف بنجاح',
+
+    'admin.change_password' => 'تغيير كلمة المرور',
+    'admin.current_password' => 'كلمة المرور الحالية',
+    'admin.new_password' => 'كلمة المرور الجديدة',
+    'admin.confirm_password' => 'تأكيد كلمة المرور الجديدة',
+    'admin.password_changed' => 'تم تغيير كلمة المرور بنجاح',
+    'admin.current_password_wrong' => 'كلمة المرور الحالية غير صحيحة',
+    'admin.password_too_short' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
+    'admin.password_mismatch' => 'كلمتا المرور غير متطابقتين',
 ];
