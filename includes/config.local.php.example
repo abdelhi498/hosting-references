@@ -1,0 +1,18 @@
+<?php
+/**
+ * Copy this file to includes/config.local.php on your server and fill in
+ * your real cPanel database credentials. config.local.php is listed in
+ * .gitignore, so it will never be pushed to GitHub — this keeps your
+ * database password out of your public/private repo history.
+ *
+ * cPanel database names/users are usually prefixed with your cPanel
+ * username, e.g. "cpaneluser_hostingref".
+ */
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'cpaneluser_hostingref');
+define('DB_USER', 'cpaneluser_hostuser');
+define('DB_PASS', 'put-your-real-password-here');
+
+// Update this to your live domain (no trailing slash) once deployed:
+// define('SITE_URL', 'https://your-domain.com');

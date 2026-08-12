@@ -1,0 +1,11 @@
+# Local DB credentials — never commit real credentials
+includes/config.local.php
+
+# User-uploaded content (logos, article covers) — keep the folder, not its contents
+uploads/*
+!uploads/.gitkeep
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.log
