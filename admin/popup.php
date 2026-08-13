@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['do'] ?? '') === 'save') {
             'popup_cta_en'         => trim($_POST['popup_cta_en'] ?? ''),
             'popup_urgency_ar'     => trim($_POST['popup_urgency_ar'] ?? ''),
             'popup_urgency_en'     => trim($_POST['popup_urgency_en'] ?? ''),
+            'popup_bonus_ar'       => trim($_POST['popup_bonus_ar'] ?? ''),
+            'popup_bonus_en'       => trim($_POST['popup_bonus_en'] ?? ''),
             'popup_template'       => $template,
             'popup_theme'          => $theme,
             'popup_delay_seconds'  => (string)$delay,
@@ -81,6 +83,10 @@ require __DIR__ . '/includes/layout_start.php';
       <div class="field">
         <label><?= t('popup.badge_text') ?></label>
         <input type="text" name="popup_badge_text" value="<?= e($s['popup_badge_text'] ?? '') ?>" placeholder="70% OFF">
+      </div>
+      <div class="form-grid">
+        <div class="field"><label><?= t('popup.bonus_ar') ?></label><input type="text" name="popup_bonus_ar" value="<?= e($s['popup_bonus_ar'] ?? '') ?>" placeholder="+ خصم 20$ إضافي عند استخدام الكوبون"></div>
+        <div class="field"><label><?= t('popup.bonus_en') ?></label><input type="text" name="popup_bonus_en" value="<?= e($s['popup_bonus_en'] ?? '') ?>" placeholder="+ Extra $20 off with this coupon"></div>
       </div>
       <div class="form-grid">
         <div class="field">

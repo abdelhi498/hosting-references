@@ -441,11 +441,35 @@ body.promo-popup-locked{overflow:hidden}
   background:linear-gradient(120deg,var(--accent-2),#ffb15c);color:#221204;font-weight:900;font-size:20px;
   padding:12px 18px;border-radius:14px;margin-bottom:16px;box-shadow:0 14px 28px -10px rgba(255,138,43,.55);
 }
+/* Two-column variant: a short bonus note beside the main percentage,
+   matching a reference layout the site owner asked to match. */
+.promo-popup-stat--split{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:start;
+  padding:10px 18px;
+}
+.promo-popup-stat-bonus{font-size:12px;font-weight:700;line-height:1.35;flex:1;opacity:.9}
+.promo-popup-stat-main{font-size:26px;font-weight:900;white-space:nowrap}
 
 .promo-popup-instruction{margin:0 0 12px;color:#9fb3d6;font-size:12.5px;line-height:1.5}
 
-.promo-popup-whatsapp{background:#25d366;color:#06301c;box-shadow:0 10px 22px -8px rgba(37,211,102,.55)}
-.promo-popup-whatsapp:hover{background:#1ebd58;color:#06301c}
+/* Code display: a dedicated copy affordance, separate from the primary
+   "go" button below it — click it to copy the code (and also jump to
+   the offer, same as the button, for a one-click path). */
+.promo-popup-code-box{
+  display:flex;align-items:center;justify-content:center;gap:2px;width:100%;
+  border:1.5px dashed rgba(255,255,255,.4);border-radius:12px;background:rgba(255,255,255,.06);
+  padding:12px 16px;cursor:pointer;font-family:inherit;transition:background .15s ease, border-color .15s ease;
+}
+.promo-popup-code-box:hover{background:rgba(255,255,255,.1)}
+.promo-popup-code-box.is-copied{border-color:var(--emerald)}
+.promo-popup-copy-label{font-size:12.5px;font-weight:700;color:#a9c4ff;flex-shrink:0}
+.promo-popup-code{font-family:monospace;font-weight:800;font-size:16px;letter-spacing:.03em;flex:1;text-align:center}
+
+.promo-popup-whatsapp{
+  background:transparent;color:#25d366;border:1.5px solid rgba(37,211,102,.55);
+  box-shadow:none;
+}
+.promo-popup-whatsapp:hover{background:rgba(37,211,102,.1);color:#25d366}
 
 .promo-popup-no-thanks{
   display:block;margin:4px auto 0;background:none;border:none;color:#7d8fb2;font-size:12.5px;
@@ -512,6 +536,24 @@ body.promo-popup-locked{overflow:hidden}
    dashed-white-border chip — flip it for a light card. */
 .promo-popup--theme-light .coupon-cta{border-color:rgba(11,27,50,.3);background:var(--navy-100)}
 .promo-popup--theme-light .coupon-cta .code{color:var(--navy-900)}
+
+/* Light theme uses a royal-blue accent (instead of orange) for the
+   discount callout and code box, to match a reference the site owner
+   asked to follow closely. */
+.promo-popup--theme-light .promo-popup-stat{
+  background:linear-gradient(120deg,#2451e0,#5b7cf5);color:#fff;
+  box-shadow:0 14px 28px -10px rgba(36,81,224,.4);
+}
+.promo-popup--theme-light .promo-popup-code-box{
+  border-color:rgba(36,81,224,.35);background:#eef2ff;
+}
+.promo-popup--theme-light .promo-popup-code-box:hover{background:#e2e9ff}
+.promo-popup--theme-light .promo-popup-copy-label{color:#2451e0}
+.promo-popup--theme-light .promo-popup-code{color:#1a3aad}
+.promo-popup--theme-light .promo-popup-card .btn-primary{
+  background:#2451e0;box-shadow:0 10px 22px -8px rgba(36,81,224,.5);
+}
+.promo-popup--theme-light .promo-popup-card .btn-primary:hover{background:#1a3aad}
 
 /* Admin preview: same card, rendered inline instead of as a fixed overlay */
 .promo-popup.is-preview{position:static !important;pointer-events:auto}

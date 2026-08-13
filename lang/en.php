@@ -184,4 +184,7 @@ return [
     'popup.instruction' => 'Tap the code to copy it and go straight to the offer',
     'popup.no_thanks' => 'No thanks, not now',
     'popup.whatsapp_cta' => 'Chat with us on WhatsApp',
+    'popup.bonus_ar' => 'Extra text next to the discount (optional, Arabic)',
+    'popup.bonus_en' => 'Extra text next to the discount (optional, English)',
+    'popup.copy_label' => 'Copy',
 ];

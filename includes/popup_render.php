@@ -31,6 +31,7 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
     $cta   = trim($s['popup_cta_' . $lang] ?? '') ?: t('coupons.use_now');
     $badge = trim($s['popup_badge_text'] ?? '') ?: ($coupon['discount_text'] ?? '');
     $urgency = trim($s['popup_urgency_' . $lang] ?? '');
+    $bonus = trim($s['popup_bonus_' . $lang] ?? '');
     $icon = trim($s['popup_icon'] ?? '');
 
     if ($coupon) {
@@ -81,7 +82,14 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
         <?php if ($desc): ?><p class="promo-popup-desc"><?= e($desc) ?></p><?php endif; ?>
 
         <?php if ($badge && $template !== 'banner'): ?>
-          <div class="promo-popup-stat"><?= e($badge) ?></div>
+          <?php if ($isCenter && $bonus): ?>
+            <div class="promo-popup-stat promo-popup-stat--split">
+              <span class="promo-popup-stat-bonus"><?= e($bonus) ?></span>
+              <span class="promo-popup-stat-main"><?= e($badge) ?></span>
+            </div>
+          <?php else: ?>
+            <div class="promo-popup-stat"><?= e($badge) ?></div>
+          <?php endif; ?>
         <?php elseif ($badge): ?>
           <span class="promo-popup-badge"><?= e($badge) ?></span>
         <?php endif; ?>
@@ -101,7 +109,17 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
         <?php endif; ?>
 
         <div class="promo-popup-actions">
-          <?php if ($coupon): ?>
+          <?php if ($coupon && $isCenter): ?>
+            <button type="button" class="promo-popup-code-box"
+                    data-copy="<?= e($coupon['code']) ?>"
+                    data-goto="<?= e($link) ?>"
+                    data-copied-label="<?= e(t('coupons.copied')) ?>"
+                    data-popup-close>
+              <span class="promo-popup-copy-label">&#128203; <?= t('popup.copy_label') ?></span>
+              <span class="promo-popup-code">&nbsp;<?= e($coupon['code']) ?></span>
+            </button>
+            <a href="<?= e($link) ?>" class="btn btn-primary btn-block" target="_blank" rel="nofollow noopener" data-popup-close><?= e($cta) ?></a>
+          <?php elseif ($coupon): ?>
             <button type="button" class="coupon-cta promo-popup-coupon"
                     data-copy="<?= e($coupon['code']) ?>"
                     data-goto="<?= e($link) ?>"
