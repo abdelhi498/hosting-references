@@ -31,6 +31,7 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
     $cta   = trim($s['popup_cta_' . $lang] ?? '') ?: t('coupons.use_now');
     $badge = trim($s['popup_badge_text'] ?? '') ?: ($coupon['discount_text'] ?? '');
     $urgency = trim($s['popup_urgency_' . $lang] ?? '');
+    $icon = trim($s['popup_icon'] ?? '');
 
     if ($coupon) {
         $link = 'go.php?company=' . urlencode($coupon['company_slug']) . '&coupon=' . (int)$coupon['id'];
@@ -44,6 +45,7 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
 
     $template = in_array($s['popup_template'] ?? '', ['center', 'corner', 'banner'], true)
         ? $s['popup_template'] : 'center';
+    $theme = in_array($s['popup_theme'] ?? '', ['dark', 'light'], true) ? $s['popup_theme'] : 'dark';
     $delay = max(0, (int)($s['popup_delay_seconds'] ?? 4));
     $frequency = in_array($s['popup_frequency'] ?? '', ['every_visit', 'once_session', 'once_day'], true)
         ? $s['popup_frequency'] : 'once_session';
@@ -56,20 +58,33 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
         $daysLeft = (int)ceil((strtotime($coupon['expires_at']) - strtotime(date('Y-m-d'))) / 86400);
     }
 
+    // The richer elements below (big stat callout, "how to use" hint,
+    // WhatsApp CTA, soft dismiss link) only make sense on the spacious
+    // centered modal — the corner/banner templates stay compact.
+    $isCenter = $template === 'center';
+    $whatsapp = $isCenter ? setting($pdo, 'social_whatsapp') : '';
+
     ob_start();
     ?>
-    <div id="promo-popup" class="promo-popup promo-popup--<?= e($template) ?><?= $preview ? ' is-preview' : '' ?>" data-delay="<?= $delay ?>" data-frequency="<?= e($frequency) ?>" data-template="<?= e($template) ?>"<?= $preview ? '' : ' hidden' ?>>
+    <div id="promo-popup" class="promo-popup promo-popup--<?= e($template) ?> promo-popup--theme-<?= e($theme) ?><?= $preview ? ' is-preview' : '' ?>" data-delay="<?= $delay ?>" data-frequency="<?= e($frequency) ?>" data-template="<?= e($template) ?>"<?= $preview ? '' : ' hidden' ?>>
       <div class="promo-popup-backdrop" data-popup-close></div>
       <div class="promo-popup-card" role="dialog" aria-modal="true" aria-labelledby="promo-popup-title">
         <button type="button" class="promo-popup-close" data-popup-close aria-label="<?= is_rtl() ? 'إغلاق' : 'Close' ?>">&times;</button>
 
+        <?php if ($icon): ?><div class="promo-popup-icon"><?= e($icon) ?></div><?php endif; ?>
+
         <div class="promo-popup-top">
-          <?php if ($badge): ?><span class="promo-popup-badge"><?= e($badge) ?></span><?php endif; ?>
           <?php if ($urgency): ?><span class="promo-popup-urgency"><?= e($urgency) ?></span><?php endif; ?>
         </div>
 
         <h3 id="promo-popup-title"><?= e($title) ?></h3>
         <?php if ($desc): ?><p class="promo-popup-desc"><?= e($desc) ?></p><?php endif; ?>
+
+        <?php if ($badge && $template !== 'banner'): ?>
+          <div class="promo-popup-stat"><?= e($badge) ?></div>
+        <?php elseif ($badge): ?>
+          <span class="promo-popup-badge"><?= e($badge) ?></span>
+        <?php endif; ?>
 
         <?php if ($daysLeft !== null): ?>
           <div class="promo-popup-countdown">
@@ -79,6 +94,10 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
               <span>&#9203; <?= t('popup.ends_prefix') ?> <?= (int)$daysLeft ?> <?= t('popup.days_suffix') ?></span>
             <?php endif; ?>
           </div>
+        <?php endif; ?>
+
+        <?php if ($isCenter && $coupon): ?>
+          <p class="promo-popup-instruction"><?= t('popup.instruction') ?></p>
         <?php endif; ?>
 
         <div class="promo-popup-actions">
@@ -94,10 +113,20 @@ function render_promo_popup(PDO $pdo, bool $preview = false): string
           <?php else: ?>
             <a href="<?= e($link) ?>" class="btn btn-primary btn-block" target="_blank" rel="nofollow noopener" data-popup-close><?= e($cta) ?></a>
           <?php endif; ?>
+
+          <?php if ($whatsapp): ?>
+            <a href="<?= e($whatsapp) ?>" class="btn btn-block promo-popup-whatsapp" target="_blank" rel="noopener" data-popup-close>
+              &#128241; <?= t('popup.whatsapp_cta') ?>
+            </a>
+          <?php endif; ?>
         </div>
 
         <?php if ($usesCount > 0): ?>
           <p class="promo-popup-social-proof">&#128293; <?= t('popup.uses_prefix') ?> <?= number_format($usesCount) ?> <?= t('popup.uses_suffix') ?></p>
+        <?php endif; ?>
+
+        <?php if ($isCenter): ?>
+          <button type="button" class="promo-popup-no-thanks" data-popup-close><?= t('popup.no_thanks') ?></button>
         <?php endif; ?>
       </div>
     </div>

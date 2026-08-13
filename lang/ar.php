@@ -177,4 +177,11 @@ return [
     'popup.ends_today' => 'ينتهي اليوم!',
     'popup.ends_prefix' => 'ينتهي خلال',
     'popup.days_suffix' => 'يوم',
+    'popup.icon' => 'أيقونة زخرفية (إيموجي، اختياري)',
+    'popup.theme' => 'مظهر البوب أب',
+    'popup.theme_dark' => 'داكن',
+    'popup.theme_light' => 'فاتح',
+    'popup.instruction' => 'اضغط على الكود لنسخه والانتقال للعرض مباشرة',
+    'popup.no_thanks' => 'لا شكرًا، ليس الآن',
+    'popup.whatsapp_cta' => 'استفسر عبر واتساب',
 ];

@@ -419,13 +419,39 @@ body.promo-popup-locked{overflow:hidden}
   background:rgba(255,255,255,.06);border:1px dashed rgba(255,178,122,.4);padding:6px 12px;
   border-radius:10px;margin-bottom:16px;
 }
-.promo-popup-actions{margin-bottom:14px}
-.promo-popup-social-proof{margin:0;color:#9fb3d6;font-size:12.5px;font-weight:600}
+.promo-popup-actions{margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.promo-popup-social-proof{margin:0 0 10px;color:#9fb3d6;font-size:12.5px;font-weight:600}
 
 /* The site's existing coupon "code chip + action" component, adapted to sit
    full-width and centered inside the popup card. */
 .promo-popup-coupon{width:100%;justify-content:center}
 .promo-popup-coupon .code{flex:1;text-align:center}
+
+.promo-popup-icon{
+  width:64px;height:64px;margin:0 auto 14px;border-radius:50%;font-size:32px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, rgba(18,184,134,.25), rgba(255,138,43,.25));
+  animation:popupIconBob 2.6s ease-in-out infinite;
+}
+@keyframes popupIconBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-4deg)}}
+
+/* Big, high-contrast callout for the discount itself — separate from the
+   small "urgency" pill so the offer's headline number is unmissable. */
+.promo-popup-stat{
+  background:linear-gradient(120deg,var(--accent-2),#ffb15c);color:#221204;font-weight:900;font-size:20px;
+  padding:12px 18px;border-radius:14px;margin-bottom:16px;box-shadow:0 14px 28px -10px rgba(255,138,43,.55);
+}
+
+.promo-popup-instruction{margin:0 0 12px;color:#9fb3d6;font-size:12.5px;line-height:1.5}
+
+.promo-popup-whatsapp{background:#25d366;color:#06301c;box-shadow:0 10px 22px -8px rgba(37,211,102,.55)}
+.promo-popup-whatsapp:hover{background:#1ebd58;color:#06301c}
+
+.promo-popup-no-thanks{
+  display:block;margin:4px auto 0;background:none;border:none;color:#7d8fb2;font-size:12.5px;
+  font-weight:600;text-decoration:underline;cursor:pointer;padding:4px;
+}
+.promo-popup-no-thanks:hover{color:#c9d6ec}
 
 /* ===== Template: center (default) — classic centered modal ===== */
 .promo-popup--center{display:flex;align-items:center;justify-content:center;padding:20px}
@@ -466,6 +492,26 @@ body.promo-popup-locked{overflow:hidden}
 .promo-popup--banner .promo-popup-actions{margin:0;flex-shrink:0}
 .promo-popup--banner .promo-popup-coupon{width:auto}
 .promo-popup--banner .promo-popup-close{position:absolute;top:50%;inset-inline-end:14px;transform:translateY(-50%)}
+
+/* ===== Theme: light — white card instead of the navy gradient ===== */
+.promo-popup--theme-light .promo-popup-card{
+  background:linear-gradient(160deg,#ffffff,#f7f8fb);color:var(--ink);
+  border-color:#eef1f7;
+}
+.promo-popup--theme-light .promo-popup-close{background:var(--navy-100);color:var(--navy-800)}
+.promo-popup--theme-light .promo-popup-close:hover{background:#dfe6f2}
+.promo-popup--theme-light .promo-popup-card h3{color:var(--navy-900)}
+.promo-popup--theme-light .promo-popup-desc{color:var(--muted)}
+.promo-popup--theme-light .promo-popup-urgency{color:#a6540c;background:rgba(255,138,43,.12);border-color:rgba(255,138,43,.3)}
+.promo-popup--theme-light .promo-popup-countdown{color:#c2530f;background:rgba(255,138,43,.08);border-color:rgba(255,138,43,.35)}
+.promo-popup--theme-light .promo-popup-instruction{color:var(--muted)}
+.promo-popup--theme-light .promo-popup-social-proof{color:var(--muted)}
+.promo-popup--theme-light .promo-popup-no-thanks{color:#94a3bb}
+.promo-popup--theme-light .promo-popup-no-thanks:hover{color:var(--navy-800)}
+/* The shared .coupon-cta component defaults to light text on a dark,
+   dashed-white-border chip — flip it for a light card. */
+.promo-popup--theme-light .coupon-cta{border-color:rgba(11,27,50,.3);background:var(--navy-100)}
+.promo-popup--theme-light .coupon-cta .code{color:var(--navy-900)}
 
 /* Admin preview: same card, rendered inline instead of as a fixed overlay */
 .promo-popup.is-preview{position:static !important;pointer-events:auto}

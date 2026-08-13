@@ -11,12 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['do'] ?? '') === 'save') {
 
         $template = in_array($_POST['popup_template'] ?? '', ['center', 'corner', 'banner'], true)
             ? $_POST['popup_template'] : 'center';
+        $theme = in_array($_POST['popup_theme'] ?? '', ['dark', 'light'], true)
+            ? $_POST['popup_theme'] : 'dark';
 
         $values = [
             'popup_enabled'        => isset($_POST['popup_enabled']) ? '1' : '0',
             'popup_coupon_id'      => (int)($_POST['popup_coupon_id'] ?? 0) ?: '',
             'popup_custom_link'    => trim($_POST['popup_custom_link'] ?? ''),
             'popup_badge_text'     => trim($_POST['popup_badge_text'] ?? ''),
+            'popup_icon'           => trim($_POST['popup_icon'] ?? ''),
             'popup_title_ar'       => trim($_POST['popup_title_ar'] ?? ''),
             'popup_title_en'       => trim($_POST['popup_title_en'] ?? ''),
             'popup_desc_ar'        => trim($_POST['popup_desc_ar'] ?? ''),
@@ -26,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['do'] ?? '') === 'save') {
             'popup_urgency_ar'     => trim($_POST['popup_urgency_ar'] ?? ''),
             'popup_urgency_en'     => trim($_POST['popup_urgency_en'] ?? ''),
             'popup_template'       => $template,
+            'popup_theme'          => $theme,
             'popup_delay_seconds'  => (string)$delay,
             'popup_frequency'      => $frequency,
         ];
@@ -78,14 +82,28 @@ require __DIR__ . '/includes/layout_start.php';
         <label><?= t('popup.badge_text') ?></label>
         <input type="text" name="popup_badge_text" value="<?= e($s['popup_badge_text'] ?? '') ?>" placeholder="70% OFF">
       </div>
+      <div class="form-grid">
+        <div class="field">
+          <label><?= t('popup.template') ?></label>
+          <?php $tpl = in_array($s['popup_template'] ?? '', ['center','corner','banner'], true) ? $s['popup_template'] : 'center'; ?>
+          <select name="popup_template" id="popup-template-select">
+            <option value="center" <?= $tpl === 'center' ? 'selected' : '' ?>><?= t('popup.template_center') ?></option>
+            <option value="corner" <?= $tpl === 'corner' ? 'selected' : '' ?>><?= t('popup.template_corner') ?></option>
+            <option value="banner" <?= $tpl === 'banner' ? 'selected' : '' ?>><?= t('popup.template_banner') ?></option>
+          </select>
+        </div>
+        <div class="field">
+          <label><?= t('popup.theme') ?></label>
+          <?php $theme = in_array($s['popup_theme'] ?? '', ['dark','light'], true) ? $s['popup_theme'] : 'dark'; ?>
+          <select name="popup_theme" id="popup-theme-select">
+            <option value="dark" <?= $theme === 'dark' ? 'selected' : '' ?>><?= t('popup.theme_dark') ?></option>
+            <option value="light" <?= $theme === 'light' ? 'selected' : '' ?>><?= t('popup.theme_light') ?></option>
+          </select>
+        </div>
+      </div>
       <div class="field">
-        <label><?= t('popup.template') ?></label>
-        <?php $tpl = in_array($s['popup_template'] ?? '', ['center','corner','banner'], true) ? $s['popup_template'] : 'center'; ?>
-        <select name="popup_template" id="popup-template-select">
-          <option value="center" <?= $tpl === 'center' ? 'selected' : '' ?>><?= t('popup.template_center') ?></option>
-          <option value="corner" <?= $tpl === 'corner' ? 'selected' : '' ?>><?= t('popup.template_corner') ?></option>
-          <option value="banner" <?= $tpl === 'banner' ? 'selected' : '' ?>><?= t('popup.template_banner') ?></option>
-        </select>
+        <label><?= t('popup.icon') ?></label>
+        <input type="text" name="popup_icon" value="<?= e($s['popup_icon'] ?? '') ?>" placeholder="🚀" maxlength="10">
       </div>
 
       <div class="form-grid">
@@ -127,16 +145,26 @@ require __DIR__ . '/includes/layout_start.php';
     <?php if ($preview): ?>
       <?= $preview ?>
       <script>
-        // Live-swap the preview's template class when the select changes,
-        // no save/reload needed — the content markup is identical across
-        // templates, only the promo-popup--{template} class differs.
+        // Live-swap the preview's template/theme class when either select
+        // changes, no save/reload needed — the content markup is identical,
+        // only the promo-popup--{template} / promo-popup--theme-{theme}
+        // classes differ. This can't reflect content-field edits (icon,
+        // title, coupon...) without a save — those need the form submitted.
         (function () {
-          var select = document.getElementById('popup-template-select');
           var el = document.getElementById('promo-popup');
-          if (!select || !el) return;
-          select.addEventListener('change', function () {
-            el.className = el.className.replace(/promo-popup--\w+/, 'promo-popup--' + select.value);
-          });
+          if (!el) return;
+          var templateSelect = document.getElementById('popup-template-select');
+          var themeSelect = document.getElementById('popup-theme-select');
+          if (templateSelect) {
+            templateSelect.addEventListener('change', function () {
+              el.className = el.className.replace(/promo-popup--(center|corner|banner)/, 'promo-popup--' + templateSelect.value);
+            });
+          }
+          if (themeSelect) {
+            themeSelect.addEventListener('change', function () {
+              el.className = el.className.replace(/promo-popup--theme-\w+/, 'promo-popup--theme-' + themeSelect.value);
+            });
+          }
         })();
       </script>
     <?php else: ?>

@@ -177,4 +177,11 @@ return [
     'popup.ends_today' => 'Ends today!',
     'popup.ends_prefix' => 'Ends in',
     'popup.days_suffix' => 'days',
+    'popup.icon' => 'Decorative icon (emoji, optional)',
+    'popup.theme' => 'Popup theme',
+    'popup.theme_dark' => 'Dark',
+    'popup.theme_light' => 'Light',
+    'popup.instruction' => 'Tap the code to copy it and go straight to the offer',
+    'popup.no_thanks' => 'No thanks, not now',
+    'popup.whatsapp_cta' => 'Chat with us on WhatsApp',
 ];
