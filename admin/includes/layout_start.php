@@ -11,6 +11,7 @@ $nav_items = [
     ['features.php', 'admin.features', ['super_admin','editor']],
     ['coupons.php', 'admin.coupons', ['super_admin','editor']],
     ['articles.php', 'admin.articles', ['super_admin','editor']],
+    ['popup.php', 'popup.title', ['super_admin','editor']],
     ['proxy_requests.php', 'admin.proxy_requests', ['super_admin','editor']],
     ['customers.php', 'admin.customers', ['super_admin','editor']],
     ['messages.php', 'admin.messages', ['super_admin','editor']],

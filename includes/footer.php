@@ -39,6 +39,11 @@
     </div>
   </div>
 </footer>
+<?php $__popup_html = render_promo_popup($pdo); ?>
+<?php if ($__popup_html): ?>
+  <?= $__popup_html ?>
+  <script src="assets/js/popup.js"></script>
+<?php endif; ?>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

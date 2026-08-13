@@ -381,6 +381,50 @@ footer a:hover{color:#fff}
 .disclosure{font-size:12.5px;color:#6f84a8;border-top:1px solid rgba(255,255,255,.08);padding-top:20px;margin-top:10px}
 .bottom-bar{display:flex;justify-content:space-between;font-size:13px;flex-wrap:wrap;gap:10px}
 
+/* ---------- Promo popup ---------- */
+body.promo-popup-locked{overflow:hidden}
+.promo-popup{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.promo-popup-backdrop{
+  position:absolute;inset:0;background:rgba(6,16,31,.72);backdrop-filter:blur(3px);
+  opacity:0;transition:opacity .25s ease;
+}
+.promo-popup-card{
+  position:relative;z-index:1;width:100%;max-width:400px;
+  background:linear-gradient(160deg,var(--navy-900),var(--navy-800));color:#fff;
+  border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:34px 28px 28px;
+  text-align:center;box-shadow:0 30px 70px -20px rgba(0,0,0,.55);
+  opacity:0;transform:scale(.92) translateY(10px);
+  transition:opacity .28s ease, transform .28s ease;
+}
+.promo-popup.is-open .promo-popup-backdrop{opacity:1}
+.promo-popup.is-open .promo-popup-card{opacity:1;transform:scale(1) translateY(0)}
+.promo-popup-close{
+  position:absolute;top:14px;inset-inline-end:14px;width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:none;color:#fff;font-size:20px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .15s ease;
+}
+.promo-popup-close:hover{background:rgba(255,255,255,.2)}
+.promo-popup-badge{
+  display:inline-block;background:var(--accent-2);color:#221204;font-weight:800;font-size:13px;
+  padding:6px 16px;border-radius:999px;margin-bottom:16px;box-shadow:0 10px 20px -6px rgba(255,138,43,.6);
+}
+.promo-popup-card h3{margin:0 0 10px;font-size:22px;font-weight:800;line-height:1.35}
+.promo-popup-card p{margin:0 0 22px;color:#c9d6ec;font-size:14.5px;line-height:1.6}
+
+/* Admin preview: same card, rendered inline instead of as a fixed overlay */
+.promo-popup.is-preview{position:static;padding:0;display:block}
+.promo-popup.is-preview .promo-popup-backdrop{display:none}
+.promo-popup.is-preview .promo-popup-card{
+  opacity:1;transform:none;max-width:100%;margin:0 auto;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .promo-popup-backdrop,.promo-popup-card{transition:none}
+}
+
 /* ---------- Misc ---------- */
 .empty-state{text-align:center;color:var(--muted);padding:50px 20px}
 .badge{display:inline-block;background:var(--navy-100);color:var(--navy-800);font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
