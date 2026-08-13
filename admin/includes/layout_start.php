@@ -25,8 +25,8 @@ $nav_items = [
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($page_title ?? '') ?> - <?= t('nav.admin') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/admin.css">
+<link rel="stylesheet" href="../<?= e(asset_url('assets/css/style.css')) ?>">
+<link rel="stylesheet" href="../<?= e(asset_url('assets/css/admin.css')) ?>">
 </head>
 <body class="lang-ar admin-body">
 <div class="admin-shell">

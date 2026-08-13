@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= t('admin.login_title') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../<?= e(asset_url('assets/css/style.css')) ?>">
 <style>
 body.lang-ar{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--navy-950)}
 .login-card{width:100%;max-width:400px;background:#fff;border-radius:var(--radius);padding:34px;box-shadow:var(--shadow-lg)}

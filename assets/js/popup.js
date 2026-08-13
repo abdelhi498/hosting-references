@@ -28,9 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function openPopup() {
     popup.hidden = false;
-    requestAnimationFrame(function () {
+    // A plain rAF here can stay paused indefinitely on a backgrounded/
+    // inactive tab (Chrome pauses rAF when document.visibilityState isn't
+    // "visible"), leaving the card stuck at opacity:0. setTimeout doesn't
+    // have that pause behavior, so use it to guarantee the transition
+    // class is applied even if the tab isn't in the foreground yet.
+    setTimeout(function () {
       popup.classList.add('is-open');
-    });
+    }, 20);
     document.body.classList.add('promo-popup-locked');
     markShown();
   }

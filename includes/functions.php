@@ -178,3 +178,15 @@ function redirect(string $url): void
     header('Location: ' . $url);
     exit;
 }
+
+/**
+ * Appends a cache-busting ?v=<mtime> query string to a root-relative asset
+ * path (e.g. 'assets/css/style.css'), so browsers fetch a fresh copy the
+ * moment the file changes on deploy instead of serving a stale cached one.
+ */
+function asset_url(string $rootRelativePath): string
+{
+    $file = __DIR__ . '/../' . $rootRelativePath;
+    $v = file_exists($file) ? filemtime($file) : time();
+    return $rootRelativePath . '?v=' . $v;
+}
