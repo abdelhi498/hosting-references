@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var delay = Math.max(0, parseInt(popup.getAttribute('data-delay'), 10) || 0) * 1000;
   var frequency = popup.getAttribute('data-frequency') || 'once_session';
+  var template = popup.getAttribute('data-template') || 'center';
   var STORAGE_KEY = 'hr_promo_popup_last_shown';
 
   function alreadyShown() {
@@ -36,7 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () {
       popup.classList.add('is-open');
     }, 20);
-    document.body.classList.add('promo-popup-locked');
+    // Only the centered modal blocks the page (backdrop + scroll lock) —
+    // the corner and banner templates are non-blocking notifications.
+    if (template === 'center') {
+      document.body.classList.add('promo-popup-locked');
+    }
     markShown();
   }
 

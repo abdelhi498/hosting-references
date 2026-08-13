@@ -383,46 +383,100 @@ footer a:hover{color:#fff}
 
 /* ---------- Promo popup ---------- */
 body.promo-popup-locked{overflow:hidden}
-.promo-popup{
-  position:fixed;inset:0;z-index:200;
-  display:flex;align-items:center;justify-content:center;padding:20px;
-}
+
+.promo-popup{position:fixed;inset:0;z-index:200;pointer-events:none}
 .promo-popup-backdrop{
   position:absolute;inset:0;background:rgba(6,16,31,.72);backdrop-filter:blur(3px);
-  opacity:0;transition:opacity .25s ease;
+  opacity:0;transition:opacity .3s ease;pointer-events:none;
 }
 .promo-popup-card{
-  position:relative;z-index:1;width:100%;max-width:400px;
-  background:linear-gradient(160deg,var(--navy-900),var(--navy-800));color:#fff;
-  border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:34px 28px 28px;
-  text-align:center;box-shadow:0 30px 70px -20px rgba(0,0,0,.55);
-  opacity:0;transform:scale(.92) translateY(10px);
-  transition:opacity .28s ease, transform .28s ease;
+  position:relative;z-index:1;background:linear-gradient(160deg,var(--navy-900),var(--navy-800));color:#fff;
+  border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 70px -20px rgba(0,0,0,.55);
+  pointer-events:auto;opacity:0;
 }
-.promo-popup.is-open .promo-popup-backdrop{opacity:1}
-.promo-popup.is-open .promo-popup-card{opacity:1;transform:scale(1) translateY(0)}
 .promo-popup-close{
-  position:absolute;top:14px;inset-inline-end:14px;width:30px;height:30px;border-radius:50%;
+  position:absolute;top:12px;inset-inline-end:12px;width:30px;height:30px;border-radius:50%;
   background:rgba(255,255,255,.1);border:none;color:#fff;font-size:20px;line-height:1;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:background .15s ease;
+  display:flex;align-items:center;justify-content:center;transition:background .15s ease;flex-shrink:0;
 }
 .promo-popup-close:hover{background:rgba(255,255,255,.2)}
+
+.promo-popup-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .promo-popup-badge{
-  display:inline-block;background:var(--accent-2);color:#221204;font-weight:800;font-size:13px;
-  padding:6px 16px;border-radius:999px;margin-bottom:16px;box-shadow:0 10px 20px -6px rgba(255,138,43,.6);
+  display:inline-flex;align-items:center;background:var(--accent-2);color:#221204;font-weight:800;font-size:13px;
+  padding:6px 14px;border-radius:999px;box-shadow:0 10px 20px -6px rgba(255,138,43,.6);
+  animation:popupBadgePulse 1.8s ease-in-out infinite;
 }
-.promo-popup-card h3{margin:0 0 10px;font-size:22px;font-weight:800;line-height:1.35}
-.promo-popup-card p{margin:0 0 22px;color:#c9d6ec;font-size:14.5px;line-height:1.6}
+@keyframes popupBadgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.promo-popup-urgency{
+  display:inline-flex;align-items:center;gap:5px;color:#ffd7a8;font-weight:700;font-size:12.5px;
+  background:rgba(255,138,43,.14);border:1px solid rgba(255,138,43,.35);padding:5px 12px;border-radius:999px;
+}
+.promo-popup-card h3{margin:0 0 8px;font-size:21px;font-weight:800;line-height:1.35}
+.promo-popup-desc{margin:0 0 16px;color:#c9d6ec;font-size:14.5px;line-height:1.6}
+.promo-popup-countdown{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#ffb27a;
+  background:rgba(255,255,255,.06);border:1px dashed rgba(255,178,122,.4);padding:6px 12px;
+  border-radius:10px;margin-bottom:16px;
+}
+.promo-popup-actions{margin-bottom:14px}
+.promo-popup-social-proof{margin:0;color:#9fb3d6;font-size:12.5px;font-weight:600}
+
+/* The site's existing coupon "code chip + action" component, adapted to sit
+   full-width and centered inside the popup card. */
+.promo-popup-coupon{width:100%;justify-content:center}
+.promo-popup-coupon .code{flex:1;text-align:center}
+
+/* ===== Template: center (default) — classic centered modal ===== */
+.promo-popup--center{display:flex;align-items:center;justify-content:center;padding:20px}
+.promo-popup--center .promo-popup-card{
+  width:100%;max-width:410px;border-radius:20px;padding:32px 26px 26px;text-align:center;
+  transform:scale(.92) translateY(10px);transition:opacity .3s ease, transform .3s ease;
+}
+.promo-popup--center.is-open .promo-popup-backdrop{opacity:1}
+.promo-popup--center.is-open .promo-popup-card{opacity:1;transform:scale(1) translateY(0)}
+.promo-popup--center .promo-popup-top{justify-content:center}
+
+/* ===== Template: corner — gentle slide-in card, doesn't block the page ===== */
+.promo-popup--corner{display:block;padding:0}
+.promo-popup--corner .promo-popup-backdrop{display:none}
+.promo-popup--corner .promo-popup-card{
+  position:fixed;bottom:20px;inset-inline-end:20px;width:calc(100% - 40px);max-width:360px;
+  border-radius:18px;padding:26px 22px 20px;text-align:start;
+  transform:translateY(24px);transition:opacity .35s ease, transform .35s ease;
+}
+.promo-popup--corner.is-open .promo-popup-card{opacity:1;transform:translateY(0)}
+.promo-popup--corner .promo-popup-top{justify-content:flex-start}
+
+/* ===== Template: banner — slim full-width strip along the top ===== */
+.promo-popup--banner{display:block;padding:0}
+.promo-popup--banner .promo-popup-backdrop{display:none}
+.promo-popup--banner .promo-popup-card{
+  position:fixed;top:0;inset-inline:0;width:100%;border-radius:0;border-width:0 0 1px;
+  padding:14px 50px;
+  display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;text-align:start;
+  transform:translateY(-100%);transition:opacity .3s ease, transform .3s ease;
+}
+.promo-popup--banner.is-open .promo-popup-card{opacity:1;transform:translateY(0)}
+.promo-popup--banner .promo-popup-top{margin-bottom:0}
+.promo-popup--banner .promo-popup-card h3{font-size:15.5px;margin:0}
+.promo-popup--banner .promo-popup-desc{display:none}
+.promo-popup--banner .promo-popup-countdown,
+.promo-popup--banner .promo-popup-social-proof{display:none}
+.promo-popup--banner .promo-popup-actions{margin:0;flex-shrink:0}
+.promo-popup--banner .promo-popup-coupon{width:auto}
+.promo-popup--banner .promo-popup-close{position:absolute;top:50%;inset-inline-end:14px;transform:translateY(-50%)}
 
 /* Admin preview: same card, rendered inline instead of as a fixed overlay */
-.promo-popup.is-preview{position:static;padding:0;display:block}
+.promo-popup.is-preview{position:static !important;pointer-events:auto}
 .promo-popup.is-preview .promo-popup-backdrop{display:none}
 .promo-popup.is-preview .promo-popup-card{
-  opacity:1;transform:none;max-width:100%;margin:0 auto;
+  position:static !important;opacity:1;transform:none !important;max-width:100%;
+  inset-inline:auto;top:auto;bottom:auto;margin:0 auto;
 }
 
 @media (prefers-reduced-motion: reduce){
-  .promo-popup-backdrop,.promo-popup-card{transition:none}
+  .promo-popup-backdrop,.promo-popup-card,.promo-popup-badge{transition:none;animation:none}
 }
 
 /* ---------- Misc ---------- */

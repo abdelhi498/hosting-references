@@ -9,6 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['do'] ?? '') === 'save') {
         $frequency = in_array($_POST['popup_frequency'] ?? '', ['every_visit', 'once_session', 'once_day'], true)
             ? $_POST['popup_frequency'] : 'once_session';
 
+        $template = in_array($_POST['popup_template'] ?? '', ['center', 'corner', 'banner'], true)
+            ? $_POST['popup_template'] : 'center';
+
         $values = [
             'popup_enabled'        => isset($_POST['popup_enabled']) ? '1' : '0',
             'popup_coupon_id'      => (int)($_POST['popup_coupon_id'] ?? 0) ?: '',
@@ -20,6 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['do'] ?? '') === 'save') {
             'popup_desc_en'        => trim($_POST['popup_desc_en'] ?? ''),
             'popup_cta_ar'         => trim($_POST['popup_cta_ar'] ?? ''),
             'popup_cta_en'         => trim($_POST['popup_cta_en'] ?? ''),
+            'popup_urgency_ar'     => trim($_POST['popup_urgency_ar'] ?? ''),
+            'popup_urgency_en'     => trim($_POST['popup_urgency_en'] ?? ''),
+            'popup_template'       => $template,
             'popup_delay_seconds'  => (string)$delay,
             'popup_frequency'      => $frequency,
         ];
@@ -72,7 +78,20 @@ require __DIR__ . '/includes/layout_start.php';
         <label><?= t('popup.badge_text') ?></label>
         <input type="text" name="popup_badge_text" value="<?= e($s['popup_badge_text'] ?? '') ?>" placeholder="70% OFF">
       </div>
+      <div class="field">
+        <label><?= t('popup.template') ?></label>
+        <?php $tpl = in_array($s['popup_template'] ?? '', ['center','corner','banner'], true) ? $s['popup_template'] : 'center'; ?>
+        <select name="popup_template" id="popup-template-select">
+          <option value="center" <?= $tpl === 'center' ? 'selected' : '' ?>><?= t('popup.template_center') ?></option>
+          <option value="corner" <?= $tpl === 'corner' ? 'selected' : '' ?>><?= t('popup.template_corner') ?></option>
+          <option value="banner" <?= $tpl === 'banner' ? 'selected' : '' ?>><?= t('popup.template_banner') ?></option>
+        </select>
+      </div>
 
+      <div class="form-grid">
+        <div class="field"><label><?= t('popup.urgency_ar') ?></label><input type="text" name="popup_urgency_ar" value="<?= e($s['popup_urgency_ar'] ?? '') ?>" placeholder="<?= is_rtl() ? 'مثال: ينتهي الليلة' : '' ?>"></div>
+        <div class="field"><label><?= t('popup.urgency_en') ?></label><input type="text" name="popup_urgency_en" value="<?= e($s['popup_urgency_en'] ?? '') ?>" placeholder="e.g. Ends tonight"></div>
+      </div>
       <div class="form-grid">
         <div class="field"><label><?= t('popup.title_ar') ?></label><input type="text" name="popup_title_ar" value="<?= e($s['popup_title_ar'] ?? '') ?>"></div>
         <div class="field"><label><?= t('popup.title_en') ?></label><input type="text" name="popup_title_en" value="<?= e($s['popup_title_en'] ?? '') ?>"></div>
@@ -107,6 +126,19 @@ require __DIR__ . '/includes/layout_start.php';
     <?php $preview = render_promo_popup($pdo, true); ?>
     <?php if ($preview): ?>
       <?= $preview ?>
+      <script>
+        // Live-swap the preview's template class when the select changes,
+        // no save/reload needed — the content markup is identical across
+        // templates, only the promo-popup--{template} class differs.
+        (function () {
+          var select = document.getElementById('popup-template-select');
+          var el = document.getElementById('promo-popup');
+          if (!select || !el) return;
+          select.addEventListener('change', function () {
+            el.className = el.className.replace(/promo-popup--\w+/, 'promo-popup--' + select.value);
+          });
+        })();
+      </script>
     <?php else: ?>
       <p class="empty-state"><?= is_rtl() ? 'أضف عنوانًا وكوبونًا أو رابطًا مخصصًا لمعاينة البوب أب' : 'Add a title and either a coupon or a custom link to preview the popup' ?></p>
     <?php endif; ?>
